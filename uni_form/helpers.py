@@ -30,7 +30,7 @@ class Submit(BaseInput):
     """
     
     input_type = 'submit'
-    field_classes = 'submit submitButton'
+    field_classes = 'submit submitButton primaryAction'
 
 
 class Button(BaseInput):
