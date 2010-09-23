@@ -3,6 +3,7 @@
     elements, and UI elements to forms generated via the uni_form template tag.
 
 """
+from django import forms
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.forms.forms import BoundField
 from django.template.loader import render_to_string
@@ -10,6 +11,7 @@ from django.utils.safestring import mark_safe
 
 
 from uni_form.util import BaseInput, Toggle
+from uni_form.widgets import SubmitButtonWidget
 
 class FormHelpersException(Exception):
     """ This is raised when building a form via helpers throws an error.
@@ -19,7 +21,7 @@ class FormHelpersException(Exception):
     pass
 
 
-class Submit(BaseInput):
+class Submit(BaseInput, forms.Field):
     """
         Used to create a Submit button descriptor for the uni_form template tag:
             
@@ -28,10 +30,18 @@ class Submit(BaseInput):
         Note: The first argument is also slugified and turned into the id for the submit button.
     
     """
-    
+    widget = SubmitButtonWidget
     input_type = 'submit'
     field_classes = 'submit submitButton primaryAction'
 
+    def __init__(self, name, value, **kwargs):
+        BaseInput.__init__(self, name, value)
+        kwargs = dict({'label': '', 'required': False, }, **kwargs)
+        self._widget_attrs = {'name': name, 'value': value}
+        forms.Field.__init__(self, **kwargs)
+
+    def widget_attrs(self, widget):
+        return self._widget_attrs
 
 class Button(BaseInput):
     """
