@@ -150,7 +150,7 @@ class MultiField(object):
 
     def __init__(self, label, *fields, **kwargs):
         #TODO: Decide on how to support css classes for both container divs
-        self.div_class = kwargs.get('css_class', u'ctrlHolder')
+        self.css = kwargs.get('css_class', u'ctrlHolder')
         self.label_class = kwargs.get('label_class', u'blockLabel')
         self.label_html = label and (u'<p class="label">%s</p>\n' % unicode(label)) or ''
         self.fields = fields
@@ -177,7 +177,7 @@ class MultiField(object):
         if errors:
             self.css += u' error'
 
-        output = u'<div class="%s">\n' % self.div_class
+        output = u'<div class="%s">\n' % self.css
         output += errors
         output += self.label_html
         output += u'<div class="multiField">\n'
